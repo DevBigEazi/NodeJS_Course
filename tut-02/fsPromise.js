@@ -6,12 +6,12 @@ const fileOperations = async () => {
   try {
     // we only need the path and the second argument, no need for callbacks
     const data = await fsPromise.readFile(
-      path.join(__dirname, "files", "starter.txt"),
-      "utf8"
+      path.join(__dirname, "files", "encode.txt"),
+      { encoding: "utf8" }
     );
     console.log(data);
 
-    await fsPromise.unlink(path.join(__dirname, "files", "starter.txt"));
+    await fsPromise.unlink(path.join(__dirname, "files", "encode.txt"));
 
     await fsPromise.writeFile(
       path.join(__dirname, "files", "promiseWrite.txt"),
