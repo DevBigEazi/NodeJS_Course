@@ -14,10 +14,10 @@ fs.readFile("./files/starter.txt", "utf8", (err, data) => {
 
   //   console.log(data.toString()); // with this, it is going to present the real data for us.
 
-  // we can actually define the encoding('utf8') instead of to string and that is gonna be the second argument for the realFile
+  // we can actually define the encoding('utf8') instead of to string and that is gonna be the second argument for the readFile
 });
 
-// readFile is asynchronous in nature, for example when it is processing the above code and it is going to continue running the codes that follows.
+// file system is asynchronous in nature, for example when it is processing the above code and it is going to continue running the codes that follows.
 
 console.log("Synchronous");
 
@@ -38,7 +38,7 @@ fs.writeFile(
     console.log("Writing Completed");
 
     // Updating a file
-    // To do this, we will need to use appendFile method. It will update file and as well as creating new file if the file doesnt exist.we have to plave this inside the call back of the file we want to update.
+    // To do this, we will need to use appendFile method. It will update file and as well as creating new file if the file doesnt exist.we have to place this inside the call back of the file we want to update.
     fs.appendFile(
       path.join(__dirname, "files", "reply.txt"),
       `\n\n So can we update this`,
@@ -59,6 +59,43 @@ fs.writeFile(
     );
   }
 );
+
+const fsPromise = require("fs/promises");
+const path = require("path");
+
+const fsOperations = async () => {
+  try {
+    const data = await fsPromise.readFile(
+      path.join(__dirname, "files", "lorem.txt"),
+      "utf8"
+    );
+    console.log(data);
+
+    await fsPromise.unlink(path.join(__dirname, "files", "lorem.txt"));
+
+    await fsPromise.writeFile(path.join(__dirname, "files", "write.txt"), data);
+
+    await fsPromise.appendFile(
+      path.join(__dirname, "files", "write.txt"),
+      "\n\n This file has been updated successfully"
+    );
+    await fsPromise.rename(
+      path.join(__dirname, "files", "write.txt"),
+      path.join(__dirname, "files", "renameCompleted.txt"),
+      "The data has been renamed successfully"
+    );
+
+    const newData = await fsPromise.readFile(
+      path.join(__dirname, "files", "renameCompleted.txt"),
+      "utf8"
+    );
+    console.log(newData);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+fsOperations();
 
 // according to nodjs docs, we can throw the error with the following syntax
 process.on("uncaughtException", (err) => {

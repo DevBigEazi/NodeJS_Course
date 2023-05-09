@@ -4,6 +4,7 @@ const path = require("path");
 
 const fileOperations = async () => {
   try {
+    // we only need the path and the second argument, no need for callbacks
     const data = await fsPromise.readFile(
       path.join(__dirname, "files", "starter.txt"),
       "utf8"
